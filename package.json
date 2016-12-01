@@ -1,6 +1,6 @@
 {
   "name": "docker-demo-3",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "server.js",
   "dependencies": {
     "redis": "^2.6.3"
