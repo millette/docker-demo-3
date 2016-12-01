@@ -48,6 +48,9 @@ cette version:
 n 4.6.2
 ```
 
+Ceci installera en même temps npm, que vous utiliserez pour installer yarn,
+bien sûr.
+
 # Installer Redis localement
 Dans Debian, la version jessie-backports de Redis est 3.2.5
 tandis que la version jessie (Stable) est 2.8.17. On va préférer
