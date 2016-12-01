@@ -12,20 +12,14 @@ if (process.env.REDIS_PORT) {
 }
 
 const client = redis.createClient(obj)
-// const client = redis.createClient(process.env.REDIS_PORT)
-// const client = redis.createClient({host:'redis'})
 
-client.on('error', (err) => {
-  console.log('Error ' + err)
-})
+client.on('error', (err) => console.log('Error ' + err))
 
 client.set('string key', 'string val', redis.print)
 client.hset('hash key', 'hashtest 1', 'some value', redis.print)
 client.hset(['hash key', 'hashtest 2', 'some other value'], redis.print)
 client.hkeys('hash key', (err, replies) => {
   console.log(`${replies.length} replies:`)
-  replies.forEach((reply, i) => {
-    console.log(`    ${i}: ${reply}`)
-  })
+  replies.forEach((reply, i) => console.log(`    ${i}: ${reply}`))
   client.quit()
 })
