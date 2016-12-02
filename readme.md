@@ -328,3 +328,11 @@ U: http://172.17.0.3:5984
 npm info poststart docker-demo-3@0.0.3
 npm info ok
 ```
+
+## Tous ensemble maintenant
+Nous allons linker à nos deux services::
+
+```
+docker build -t my-nodejs-app3 .
+docker run --name some-app3 --link some-couchdb:couchdb --link some-redis:redis my-nodejs-app3
+```

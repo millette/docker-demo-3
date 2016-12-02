@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "main": "server.js",
   "scripts": {
-    "start": "node couchdb",
+    "start": "node combined",
     "start-redis": "node redis",
     "start-couchdb": "node couchdb",
+    "start-combined": "node combined",
     "make-docker": "docker build -t my-nodejs-app .",
-    "make-docker2": "docker build -t my-nodejs-app2 ."
+    "make-docker2": "docker build -t my-nodejs-app2 .",
+    "make-docker3": "docker build -t my-nodejs-app3 ."
   },
   "dependencies": {
     "got": "^6.6.3",
