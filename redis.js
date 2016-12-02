@@ -1,6 +1,9 @@
 'use strict'
 
+// core
 const url = require('url')
+
+// npm
 const redis = require('redis')
 
 const obj = {}
@@ -8,7 +11,7 @@ const obj = {}
 if (process.env.REDIS_PORT) {
   const u = url.parse(process.env.REDIS_PORT)
   obj.host = u.hostname
-  obj.post = u.port
+  obj.port = u.port
 }
 
 const client = redis.createClient(obj)
