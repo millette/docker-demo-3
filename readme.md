@@ -330,7 +330,7 @@ npm info ok
 ```
 
 ## Tous ensemble maintenant
-Nous allons linker à nos deux services::
+Nous allons linker à nos deux services:
 
 ```
 docker build -t my-nodejs-app3 .
