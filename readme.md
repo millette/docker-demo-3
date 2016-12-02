@@ -73,7 +73,7 @@ avec ```yarn start``` pour obtenir le résultat suivant:
 
 ```
 yarn start v0.17.6
-$ node server.js
+$ node redis
 Reply: OK
 Reply: 0
 Reply: 0
@@ -195,7 +195,7 @@ npm info prestart docker-demo-3@0.0.1
 npm info start docker-demo-3@0.0.1
 
 > docker-demo-3@0.0.1 start /usr/src/app
-> node server.js
+> node redis.js
 
 Reply: OK
 Reply: 1
@@ -269,7 +269,7 @@ FATA[0000] Error: failed to remove one or more containers
 ```
 
 ## Notre application
-L'application NodeJS implémentée dans le fichier server.js
+L'application NodeJS implémentée dans le fichier redis.js
 fait le minimum pour démontrer le fonctionnement.
 
 Il commence avec ces lignes:
