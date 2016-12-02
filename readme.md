@@ -283,7 +283,7 @@ const obj = {}
 if (process.env.REDIS_PORT) {
   const u = url.parse(process.env.REDIS_PORT)
   obj.host = u.hostname
-  obj.post = u.port
+  obj.port = u.port
 }
 
 const client = redis.createClient(obj)
@@ -301,4 +301,30 @@ par défaut sont utilisées. Autrement, on utilise l'hôte et le port
 de la variable d'environnement.
 
 ## Et CouchDB?
-C'est la prochaine étape, à venir.
+On procède comme avec redis, mais en utilisant l'image couchdb:
+
+```
+docker run --name some-couchdb -d couchdb:1.6.1
+docker build -t my-nodejs-app2 .
+docker run --name some-app2 --link some-couchdb:couchdb my-nodejs-app2
+```
+
+Ce qui devrait donner comme résultat:
+
+```
+npm info it worked if it ends with ok
+npm info using npm@2.15.11
+npm info using node@v4.6.2
+npm info prestart docker-demo-3@0.0.3
+npm info start docker-demo-3@0.0.3
+
+> docker-demo-3@0.0.3 start /usr/src/app
+> node couchdb
+
+OBJ: { hostname: '172.17.0.3', port: '5984', protocol: 'http' }
+U: http://172.17.0.3:5984
+{"couchdb":"Welcome","uuid":"365e953683bb6da1acb99027531f3ede","version":"1.6.1","vendor":{"name":"The Apache Software Foundation","version":"1.6.1"}}
+
+npm info poststart docker-demo-3@0.0.3
+npm info ok
+```
