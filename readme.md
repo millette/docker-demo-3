@@ -143,7 +143,7 @@ yarn make-docker
 ```
 
 C'est l'équivalent de la commande suivante, telle que spécifiée
-dans le fichier package.json:
+dans les scripts du fichier package.json:
 
 ```
 docker build -t my-nodejs-app .
@@ -260,10 +260,45 @@ docker rm 4a6
 
 Pas besoin de spécifier l'ID complet, un préfixe unique suffit.
 
-Si un autre container avait un ID commençant par 4a6, on obtiendrait
-une erreur du genre:
+Si un autre container avait un ID commençant par 4a6 cependant,
+on obtiendrait une erreur du genre:
 
 ```
 Error response from daemon: Multiple IDs found with provided prefix: 4a65b01324bd811236843f71a55c0004c77eb93531056a0b568a2c6fd59f6c09
 FATA[0000] Error: failed to remove one or more containers
 ```
+
+## Notre application
+L'application NodeJS implémentée dans le fichier server.js
+fait le minimum pour démontrer le fonctionnement.
+
+Il commence avec ces lignes:
+
+```
+const url = require('url')
+const redis = require('redis')
+
+const obj = {}
+
+if (process.env.REDIS_PORT) {
+  const u = url.parse(process.env.REDIS_PORT)
+  obj.host = u.hostname
+  obj.post = u.port
+}
+
+const client = redis.createClient(obj)
+```
+
+Quand on démarre l'application localement (sans docker), la variable
+d'environnement REDIS_PORT n'est pas définie.
+
+Dans docker, REDIS_PORT contient le nécessaire pour déterminer
+l'hôte et le port de Redis.
+
+Enfin, le client est créé avec ```redis.createClient(obj)```,
+donc pour l'application locale, ```obj``` est vide et les valeurs
+par défaut sont utilisées. Autrement, on utilise l'hôte et le port
+de la variable d'environnement.
+
+## Et CouchDB?
+C'est la prochaine étape, à venir.
