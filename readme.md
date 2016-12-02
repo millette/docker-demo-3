@@ -96,3 +96,174 @@ OK
 1480631055.004862 [0 127.0.0.1:46351] "hkeys" "hash key"
 ```
 
+# Docker
+Jusqu'ici nous avons procéder localement, sans utiliser Docker.
+Nous voici enfin à l'étape attendue.
+
+## Docker-machine
+docker-machine permet de gérer des machines docker (si si).
+
+Suivez les instructions pour l'installer sur
+<https://docs.docker.com/machine/install-machine/>.
+
+Pour installer le binaire, au minimum:
+
+```
+curl -L https://github.com/docker/machine/releases/download/v0.8.2/docker-machine-`uname -s`-`uname -m` >/usr/local/bin/docker-machine
+chmod +x /usr/local/bin/docker-machine
+```
+
+## VirtualBox
+Si vous n'avez pas déjà installé virtualbox:
+
+```
+sudo aptitude install -t jessie-backports virtualbox
+```
+
+Ensuite, suivez les instructions pour créer votre première machine sur
+<https://docs.docker.com/machine/get-started/>
+
+Au minimum:
+
+```
+docker-machine create --driver virtualbox default
+```
+
+Il faut aussi sélectionner la machine:
+
+```
+eval $(docker-machine env)
+```
+
+Nous sommes maintenant prêt pour construire une nouvelle image docker
+pour notre application:
+
+```
+yarn make-docker
+```
+
+C'est l'équivalent de la commande suivante, telle que spécifiée
+dans le fichier package.json:
+
+```
+docker build -t my-nodejs-app .
+```
+
+## Fermer redis local
+Fermons le service local redis que nous n'utiliserons plus et vérifions
+qu'il est bien fermé:
+
+```
+sudo service redis stop
+redis-cli monitor
+```
+
+La connection à redis devrait être refusée:
+
+```
+Could not connect to Redis at 127.0.0.1:6379: Connection refused
+Could not connect to Redis at 127.0.0.1:6379: Connection refused
+```
+
+Nous pouvons maintenant lancer un container avec notre image:
+
+```
+docker run --name some-app --link some-redis:redis my-nodejs-app
+```
+
+Ah, mais il nous manque quelque chose parce qu'on obtient cette erreur:
+
+```
+FATA[0000] Error response from daemon: Could not get container for some-redis
+```
+
+Nous avons fermé notre redis local, il faut maintenant le démarrer
+dans un container et relancer un container avec notre image:
+
+```
+docker run --name some-redis -d redis:3.2.5-alpine
+docker run --name some-app --link some-redis:redis my-nodejs-app
+```
+
+On devrait finalement obtenir:
+
+```
+npm info it worked if it ends with ok
+npm info using npm@2.15.11
+npm info using node@v4.6.2
+npm info prestart docker-demo-3@0.0.1
+npm info start docker-demo-3@0.0.1
+
+> docker-demo-3@0.0.1 start /usr/src/app
+> node server.js
+
+Reply: OK
+Reply: 1
+Reply: 1
+2 replies:
+    0: hashtest 1
+    1: hashtest 2
+npm info poststart docker-demo-3@0.0.1
+npm info ok
+```
+
+## Du ménage
+Pour afficher les container qu'on vient de créer et leurs statuts:
+
+```
+docker ps -a|head -n1
+docker ps -a|grep some-
+```
+
+Les containers ID seront différents (et les temps sous CREATED et STATUS)
+mais autrement la sortie devrait donner:
+
+```
+CONTAINER ID  IMAGE               COMMAND                CREATED          STATUS                     PORTS      NAMES
+acac3e729095  my-nodejs-app       "npm start"            17 minutes ago   Exited (0) 3 minutes ago              some-app
+1b0211961488  redis:3.2.5-alpine  "docker-entrypoint.s   17 minutes ago   Up 3 minutes               6379/tcp   some-redis
+```
+
+Pour manipuler un container (stopper, effacer, etc.)
+il faut connaitre son ID. Dans cet exemple, nous pouvons effacer
+le container de notre application (qui a terminé) avec
+
+```
+docker rm acac3e729095
+```
+
+On peut maintenant relancer notre application:
+```
+docker run --name some-app --link some-redis:redis my-nodejs-app
+```
+
+Elle devrait terminer comme la première fois. Et si on énumère
+les containers:
+
+```
+docker ps -a|grep some-
+```
+
+Notez que l'ID du container de l'application est différent
+tandis que le container de redis n'a pas changé.
+
+```
+4a62198dd85f  my-nodejs-app       "npm start"            18 minutes ago   Exited (0) About a minute ago         some-app
+1b0211961488  redis:3.2.5-alpine  "docker-entrypoint.s   17 minutes ago   Up 3 minutes               6379/tcp   some-redis
+```
+
+Effaçons à nouveau le container de l'application:
+
+```
+docker rm 4a6
+```
+
+Pas besoin de spécifier l'ID complet, un préfixe unique suffit.
+
+Si un autre container avait un ID commençant par 4a6, on obtiendrait
+une erreur du genre:
+
+```
+Error response from daemon: Multiple IDs found with provided prefix: 4a65b01324bd811236843f71a55c0004c77eb93531056a0b568a2c6fd59f6c09
+FATA[0000] Error: failed to remove one or more containers
+```
