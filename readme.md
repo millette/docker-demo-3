@@ -369,6 +369,25 @@ docker run --name some-app3 --link some-couchdb:couchdb --link some-redis:redis 
 
 Ainsi, le résultat devrait être à peu près le même.
 
+## yaml version 2
+Jusqu'ici, nous avons utilisé les *Link environment variables*
+mais ces derniers sont dépréciés, voir
+<https://docs.docker.com/compose/link-env-deprecated/>.
+
+Notre fichier docker-compose.yml utilise la version 2 du format
+docker-compose, où les variables d'environnement ont été
+spécifiée manuellement.
+
+Maintenant, nous pouvons lancer:
+
+```
+docker-compose up
+```
+
+Et obtenir le même résulat. Nous ne spécifions pas le fichier
+de configuration (-f ...) puisque nous utilisons le nom de fichier
+par défaut.
+
 # Avec hapi
 (*à venir*)
 

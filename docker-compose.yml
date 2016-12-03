@@ -1,0 +1,20 @@
+version: '2'
+services:
+  redis:
+    image: redis:3.2.5-alpine
+
+  couchdb:
+    image: couchdb:1.6.1
+
+  myapp:
+    depends_on:
+      - couchdb
+      - redis
+
+    environment:
+      - COUCHDB_PORT=tcp://couchdb:5984
+      - REDIS_PORT=tcp://redis:6379
+
+    image: my-nodejs-app3:latest
+    ports:
+      - "8000:80"
