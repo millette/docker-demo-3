@@ -1,0 +1,13 @@
+redis:
+  image: redis:3.2.5-alpine
+
+couchdb:
+  image: couchdb:1.6.1
+
+myapp:
+  links:
+    - couchdb
+    - redis
+  image: my-nodejs-app3:latest
+  ports:
+    - "8000:80"

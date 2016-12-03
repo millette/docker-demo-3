@@ -336,3 +336,46 @@ Nous allons linker à nos deux services:
 docker build -t my-nodejs-app3 .
 docker run --name some-app3 --link some-couchdb:couchdb --link some-redis:redis my-nodejs-app3
 ```
+
+# Docker compose
+docker-compose permet de gérer un ensemble de containers.
+
+Suivez les instructions pour l'installer sur
+<https://docs.docker.com/compose/install/>.
+
+Pour installer le binaire, au minimum:
+
+```
+curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+```
+
+Un fichier yaml sert à configurer un ensemble de containers. Par défaut
+il se nomme docker-compose.yml (ou docker-compose.yaml si vous préférez).
+
+Dans notre cheminement, nous utiliserons d'abord la version 1 du format
+et nommerrons notre fichier docker-compose-v1.yml que nous lancerons:
+
+```
+docker-compose -f docker-compose-v1.yml up
+```
+
+Ce fichier de configuration et l'usage de docker-compose est équivalent
+de notre commande précédente:
+
+```
+docker run --name some-app3 --link some-couchdb:couchdb --link some-redis:redis my-nodejs-app3
+```
+
+Ainsi, le résultat devrait être à peu près le même.
+
+# Avec hapi
+(*à venir*)
+
+Serveur web de base
+
+# hyper.sh
+(*à venir*)
+
+Hébergement de containers docker
+
