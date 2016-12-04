@@ -360,7 +360,7 @@ hapi-boom-decorators@~2.1.1:
   dependencies:
     boom "^4.2.0"
 
-hapi-couchdb-login@^0.1.0:
+hapi-couchdb-login@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/hapi-couchdb-login/-/hapi-couchdb-login-0.1.1.tgz#664fd920002b4c42db903e1d7c48d5f17ae6a048"
   dependencies:

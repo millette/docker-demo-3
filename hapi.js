@@ -7,16 +7,9 @@ const url = require('url')
 const Hapi = require('hapi')
 
 const redisHost = url.parse(process.env.REDIS_PORT || 'http://localhost:6379').hostname
-
-let couchdbUrl
-
-if (process.env.COUCHDB_PORT) {
-  const x = url.parse(process.env.COUCHDB_PORT)
-  x.protocol = 'http'
-  couchdbUrl = url.format(x)
-} else {
-  couchdbUrl = 'http://localhost:5984'
-}
+const x = url.parse(process.env.COUCHDB_PORT || 'http://localhost:5984')
+x.protocol = 'http'
+const couchdbUrl = url.format(x)
 
 console.log('COUCHDB:', couchdbUrl)
 console.log('REDIS:', redisHost)
@@ -35,23 +28,26 @@ server.connection({ port: 8050 })
 server.register(
   [
     {
-      register: require('h2o2'),
-      options: {}
+      register: require('h2o2')
     },
     {
-      plugin: {
-        register: require('hapi-couchdb-login'),
-        options: {
-          db: { url: couchdbUrl },
-          cookie: {
-            password: 'password-should-be-32-characters',
-            secure: false
-          }
+      register: require('hapi-couchdb-login'),
+      options: {
+        db: {
+          url: couchdbUrl
+        },
+        cookie: {
+          password: 'password-should-be-32-characters',
+          secure: false
         }
-      },
-      options: { routes: { prefix: '/user' } }
+      }
     }
   ],
+  {
+    routes: {
+      prefix: '/user'
+    }
+  },
   (err) => {
     if (err) { throw err }
 
@@ -66,6 +62,7 @@ server.register(
     server.start((err) => {
       if (err) { throw err }
       console.log(`Server running at: ${server.info.uri}`)
+      console.log() // NOTHING DISPLAYED, BUT ALLOWS LAST LINE TO SHOW UP
     })
   }
 )

@@ -6,7 +6,12 @@ services:
   couchdb:
     image: couchdb:1.6.1
 
+    environment:
+      - COUCHDB_USER
+      - COUCHDB_PASSWORD
+
   web:
+    build: .
     depends_on:
       - couchdb
       - redis
@@ -15,6 +20,5 @@ services:
       - COUCHDB_PORT=tcp://couchdb:5984
       - REDIS_PORT=tcp://redis:6379
 
-    image: my-nodejs-app4:latest
     ports:
       - "8050:8050"
