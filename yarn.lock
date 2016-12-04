@@ -354,20 +354,20 @@ hapi-auth-cookie@^6.1.1:
     hoek "3.x.x"
     joi "7.x.x"
 
-hapi-boom-decorators@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/hapi-boom-decorators/-/hapi-boom-decorators-2.2.1.tgz#0d6a4e1556dbf05a8deb962f6dc24fd448cf2b00"
+hapi-boom-decorators@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/hapi-boom-decorators/-/hapi-boom-decorators-2.2.2.tgz#6ab6ac2468f7be0d1235335b8ddb70fd4c54bae1"
   dependencies:
     boom "^4.2.0"
 
-hapi-couchdb-login@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/hapi-couchdb-login/-/hapi-couchdb-login-0.2.0.tgz#390c7e4600056f26c8673377fd7414d1ed7f799c"
+hapi-couchdb-login@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/hapi-couchdb-login/-/hapi-couchdb-login-0.2.1.tgz#8b4b967ea87b4ddc776fac72910be4168e1510c1"
   dependencies:
     boom "^4.2.0"
     cloudant-nano "^6.4.1"
     hapi-auth-cookie "^6.1.1"
-    hapi-boom-decorators "^2.2.1"
+    hapi-boom-decorators "^2.2.2"
     lodash "^4.17.2"
     pify "^2.3.0"
 
