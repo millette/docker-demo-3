@@ -62,7 +62,7 @@ server.register(
     server.start((err) => {
       if (err) { throw err }
       console.log(`Server running at: ${server.info.uri}`)
-      console.log() // NOTHING DISPLAYED, BUT ALLOWS LAST LINE TO SHOW UP
+      console.log('nada') // NOTHING DISPLAYED, BUT ALLOWS LAST LINE TO SHOW UP
     })
   }
 )
