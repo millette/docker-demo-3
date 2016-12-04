@@ -1,18 +1,24 @@
 {
   "name": "docker-demo-3",
   "version": "0.4.0",
-  "main": "server.js",
+  "main": "hapi.js",
   "scripts": {
-    "start": "node combined",
+    "start": "node hapi",
     "start-redis": "node redis",
     "start-couchdb": "node couchdb",
     "start-combined": "node combined",
+    "start-hapi": "node hapi",
     "make-docker": "docker build -t my-nodejs-app .",
     "make-docker2": "docker build -t my-nodejs-app2 .",
-    "make-docker3": "docker build -t my-nodejs-app3 ."
+    "make-docker3": "docker build -t my-nodejs-app3 .",
+    "make-docker4": "docker build -t my-nodejs-app4 ."
   },
   "dependencies": {
+    "catbox-redis": "^2.0.2",
     "got": "^6.6.3",
+    "h2o2": "AVVS/h2o2",
+    "hapi": "^16.0.1",
+    "hapi-couchdb-login": "^0.1.1",
     "redis": "^2.6.3"
   }
 }
