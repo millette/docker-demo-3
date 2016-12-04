@@ -393,6 +393,17 @@ par défaut.
 
 Serveur web de base
 
+## localhost?
+Si le serveur ne semble pas répondre sur http://localhost:8050
+c'est que nous utilisons docker-machine. Il faut donc obtenir
+l'IP de cette machine:
+
+```
+docker-machine ip # machine par défaut
+```
+
+Pour notre exemple, disons que c'est 192.168.99.100.
+
 # hyper.sh
 (*à venir*)
 
