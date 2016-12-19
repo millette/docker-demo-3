@@ -132,6 +132,7 @@ docker-machine create --driver virtualbox default
 Il faut aussi sélectionner la machine:
 
 ```
+docker-machine start
 eval $(docker-machine env)
 ```
 
