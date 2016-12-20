@@ -14,6 +14,7 @@ console.log('pkg:', pkg)
 const redisHost = url.parse(process.env.REDIS_PORT || 'http://localhost:6379').hostname
 const x = url.parse(process.env.COUCHDB_PORT || 'http://localhost:5984')
 x.protocol = 'http'
+x.pathname = '/'
 const couchdbUrl = url.format(x)
 
 console.log('COUCHDB:', couchdbUrl)
@@ -97,6 +98,119 @@ server.register(
       }
     })
 
+    server.route({
+      method: 'GET',
+      path: '/script/{more}',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_utils/script') + '/{more}'
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/dialog/{more}',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_utils/dialog') + '/{more}'
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/image/{more}',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_utils/image') + '/{more}'
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/style/{more}',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_utils/style') + '/{more}'
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/futon',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_utils/')
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/_sidebar.html',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_utils/_sidebar.html')
+        }
+      }
+    })
+
+
+    server.route({
+      method: '*',
+      path: '/_session',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_session')
+        }
+      }
+    })
+
+
+    server.route({
+      method: 'GET',
+      path: '/{more}',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: couchdbUrl + '{more}'
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/{more}/',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: couchdbUrl + '{more}/'
+        }
+      }
+    })
+
+/*
+    server.route({
+      method: 'GET',
+      path: '/_all_dbs',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, '_all_dbs')
+        }
+      }
+    })
+*/
 
     server.start((err) => {
       let cnt = 3
