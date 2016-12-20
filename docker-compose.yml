@@ -19,6 +19,8 @@ services:
     environment:
       - COUCHDB_PORT=tcp://couchdb:5984
       - REDIS_PORT=tcp://redis:6379
+      - COUCHDB_USER
+      - COUCHDB_PASSWORD
 
     ports:
       - "8050:8050"

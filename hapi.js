@@ -5,6 +5,11 @@ const url = require('url')
 
 // npm
 const Hapi = require('hapi')
+const got = require('got')
+
+// self
+const pkg = require('./package.json')
+console.log('pkg:', pkg)
 
 const redisHost = url.parse(process.env.REDIS_PORT || 'http://localhost:6379').hostname
 const x = url.parse(process.env.COUCHDB_PORT || 'http://localhost:5984')
@@ -50,6 +55,17 @@ server.register(
   },
   (err) => {
     if (err) { throw err }
+    console.log('auth:', `${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}`)
+    got.put(url.resolve(couchdbUrl, 'mwaha'), { auth: `${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}` })
+      .then((x) => x.body)
+      .then(console.log)
+      .catch((e) => {
+        console.error('ERR:', e)
+        got.put(url.resolve(couchdbUrl, 'mwaha2'), { auth: `${process.env.COUCHDB_USER}:${process.env.COUCHDB_PASSWORD}` })
+          .then((x) => x.body)
+          .then(console.log)
+          .catch(console.error)
+      })
 
     server.route({
       method: 'GET',
@@ -59,11 +75,39 @@ server.register(
       }
     })
 
+    server.route({
+      method: 'GET',
+      path: '/dbsrv',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: couchdbUrl
+        }
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/db',
+      handler: {
+        proxy: {
+          passThrough: true,
+          uri: url.resolve(couchdbUrl, 'mwaha')
+        }
+      }
+    })
+
+
     server.start((err) => {
+      let cnt = 3
       if (err) { throw err }
       console.log(`Server running at: ${server.info.uri}`)
-      console.log('nada#1') // NOTHING DISPLAYED, BUT ALLOWS LAST LINE TO SHOW UP
-      console.log('nada#2') // NOTHING DISPLAYED, BUT ALLOWS LAST LINE TO SHOW UP
+      const i = setInterval(() => {
+        console.log('nada', cnt) // NOTHING DISPLAYED, BUT ALLOWS LAST LINE TO SHOW UP
+        if (!cnt--) {
+          clearInterval(i)
+        }
+      }, 5000)
     })
   }
 )
