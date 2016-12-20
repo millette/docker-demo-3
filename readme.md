@@ -410,3 +410,9 @@ Pour notre exemple, disons que c'est 192.168.99.100.
 
 Hébergement de containers docker
 
+**Note:** ```build: .``` dans docker-compose.yml n'est pas supporté
+sur hyper.sh
+
+## Registre privé
+Utiliser un registre d'images privé.
+
