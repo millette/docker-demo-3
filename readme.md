@@ -413,6 +413,17 @@ Hébergement de containers docker
 **Note:** ```build: .``` dans docker-compose.yml n'est pas supporté
 sur hyper.sh
 
+**Note:** n'utilisez pas de «-» dans le nom du répertoire du projet.
+J'utilisais docker-demo-3 que j'ai dû renommer dockerDemo3.
+
+```
+yarn run make-docker5
+hyper compose up -f docker-compose-hyper.yml
+docker push millette/my-nodejs-app5:latest
+```
+
+
+
 ## Registre privé
 Utiliser un registre d'images privé.
 
